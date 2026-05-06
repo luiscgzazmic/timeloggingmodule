@@ -1,57 +1,43 @@
 /* =========================================
    ZAZMIC — TIMESHEET AUDITOR
-   Built with IBM Carbon Design System tokens
+   IBM Carbon Design System
    ========================================= */
 
-/* --- IBM Plex font (Carbon's typography) --- */
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
 
-/* --- Carbon Design Tokens (White theme — g10 accents) --- */
+/* --- Carbon Design Tokens (white theme) --- */
 :root {
-    /* Backgrounds */
     --cds-background: #ffffff;
     --cds-background-hover: #e8e8e8;
-    --cds-background-active: #c6c6c6;
-    --cds-background-selected: #e0e0e0;
-    --cds-background-inverse: #393939;
     --cds-layer-01: #f4f4f4;
     --cds-layer-02: #ffffff;
-    --cds-layer-03: #f4f4f4;
     --cds-layer-hover-01: #e8e8e8;
     --cds-layer-accent-01: #e0e0e0;
 
-    /* Text */
     --cds-text-primary: #161616;
     --cds-text-secondary: #525252;
-    --cds-text-placeholder: #a8a8a8;
     --cds-text-helper: #6f6f6f;
     --cds-text-on-color: #ffffff;
     --cds-text-inverse: #ffffff;
 
-    /* Borders */
     --cds-border-subtle-00: #e0e0e0;
     --cds-border-subtle-01: #c6c6c6;
     --cds-border-strong-01: #8d8d8d;
     --cds-border-interactive: #0f62fe;
 
-    /* Interactive (Blue 60) */
     --cds-interactive: #0f62fe;
     --cds-button-primary: #0f62fe;
     --cds-button-primary-hover: #0050e6;
     --cds-button-primary-active: #002d9c;
     --cds-button-secondary: #393939;
     --cds-button-secondary-hover: #4c4c4c;
-    --cds-button-tertiary: #0f62fe;
     --cds-link-primary: #0f62fe;
-    --cds-link-primary-hover: #0043ce;
 
-    /* Support (status) */
     --cds-support-error: #da1e28;
     --cds-support-success: #24a148;
     --cds-support-warning: #f1c21b;
     --cds-support-info: #0043ce;
 
-    /* Tag colors */
     --cds-tag-blue-bg: #d0e2ff;
     --cds-tag-blue-text: #002d9c;
     --cds-tag-warm-bg: #fff8e1;
@@ -60,11 +46,11 @@
     --cds-tag-green-text: #0e6027;
     --cds-tag-cool-bg: #e5e5e5;
     --cds-tag-cool-text: #393939;
+    --cds-tag-red-bg: #ffd7d9;
+    --cds-tag-red-text: #a2191f;
 
-    /* Focus */
     --cds-focus: #0f62fe;
 
-    /* Spacing scale */
     --cds-spacing-02: 0.25rem;
     --cds-spacing-03: 0.5rem;
     --cds-spacing-04: 0.75rem;
@@ -73,6 +59,9 @@
     --cds-spacing-07: 2rem;
     --cds-spacing-08: 2.5rem;
     --cds-spacing-09: 3rem;
+
+    --tl-header-h: 48px;
+    --tl-accent-h: 2px;
 }
 
 * { box-sizing: border-box; }
@@ -96,25 +85,25 @@ button { font-family: inherit; }
    APP SHELL
    ========================================= */
 .tl-shell {
-    max-width: 1584px;
-    margin: 0 auto;
-    padding: 0;
     min-height: 100vh;
     background: var(--cds-layer-01);
+    padding-top: var(--tl-accent-h);
+    background-image: linear-gradient(90deg, #0f62fe 0%, #4589ff 50%, #0f62fe 100%);
+    background-repeat: no-repeat;
+    background-size: 100% var(--tl-accent-h);
 }
 
 /* =========================================
-   HEADER (Carbon UI Shell pattern)
+   HEADER (Carbon UI Shell)
    ========================================= */
 .tl-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: 48px;
+    height: var(--tl-header-h);
     padding: 0 var(--cds-spacing-05);
-    background: var(--cds-background-inverse);
+    background: #161616;
     color: var(--cds-text-on-color);
-    border-bottom: 1px solid var(--cds-background-inverse);
     position: sticky;
     top: 0;
     z-index: 100;
@@ -125,6 +114,7 @@ button { font-family: inherit; }
     align-items: center;
     gap: var(--cds-spacing-05);
     height: 100%;
+    min-width: 0;
 }
 
 .logo-placeholder {
@@ -139,6 +129,7 @@ button { font-family: inherit; }
     font-size: 12px;
     letter-spacing: 0.5px;
     font-family: 'IBM Plex Mono', monospace;
+    flex: 0 0 auto;
 }
 
 .brand-group h1 {
@@ -147,6 +138,9 @@ button { font-family: inherit; }
     font-weight: 400;
     color: var(--cds-text-on-color);
     letter-spacing: 0.16px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .brand-group h1 strong {
@@ -154,11 +148,10 @@ button { font-family: inherit; }
     margin-right: var(--cds-spacing-03);
 }
 
-.subtitle {
-    margin: 0;
-    font-size: 12px;
-    color: #c6c6c6;
-    letter-spacing: 0.32px;
+.brand-group h1 .sep {
+    color: #6f6f6f;
+    margin: 0 var(--cds-spacing-03);
+    font-weight: 300;
 }
 
 .v-tag {
@@ -166,29 +159,58 @@ button { font-family: inherit; }
     font-family: 'IBM Plex Mono', monospace;
     font-size: 11px;
     font-weight: 400;
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.08);
     color: #c6c6c6;
     padding: 2px 8px;
-    border-radius: 0;
     margin-left: var(--cds-spacing-03);
     letter-spacing: 0.5px;
 }
 
 .global-actions {
     display: flex;
-    align-items: center;
-    gap: var(--cds-spacing-05);
+    align-items: stretch;
+    gap: 0;
     height: 100%;
 }
 
-/* --- Date selector (Carbon text input on dark) --- */
+.connection-status {
+    display: flex;
+    align-items: center;
+    gap: var(--cds-spacing-03);
+    padding: 0 var(--cds-spacing-05);
+    font-size: 12px;
+    color: #c6c6c6;
+    border-left: 1px solid #393939;
+    font-family: 'IBM Plex Mono', monospace;
+    letter-spacing: 0.32px;
+    white-space: nowrap;
+}
+
+.connection-status .dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: #6f6f6f;
+    box-shadow: 0 0 0 0 rgba(36, 161, 72, 0.6);
+}
+.connection-status.online .dot {
+    background: #42be65;
+    animation: tl-pulse 2.5s ease-out infinite;
+}
+
+@keyframes tl-pulse {
+    0%   { box-shadow: 0 0 0 0 rgba(66, 190, 101, 0.5); }
+    70%  { box-shadow: 0 0 0 6px rgba(66, 190, 101, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(66, 190, 101, 0); }
+}
+
+/* Date selector */
 .date-selector-wrapper {
     display: flex;
     flex-direction: column;
     justify-content: center;
     height: 100%;
     padding: 0 var(--cds-spacing-05);
-    border-left: 1px solid #525252;
+    border-left: 1px solid #393939;
+    min-width: 180px;
 }
 
 .date-selector-wrapper label {
@@ -198,7 +220,6 @@ button { font-family: inherit; }
     margin: 0 0 2px 0;
     color: #c6c6c6;
     letter-spacing: 0.32px;
-    text-transform: none;
 }
 
 .tl-date-input {
@@ -213,27 +234,44 @@ button { font-family: inherit; }
     outline: none;
     transition: border-color 70ms cubic-bezier(0.2, 0, 0.38, 0.9);
     color-scheme: dark;
+    width: 100%;
 }
 
 .tl-date-input:hover { border-bottom-color: var(--cds-text-on-color); }
 .tl-date-input:focus { border-bottom: 2px solid var(--cds-button-primary); padding-bottom: 1px; }
 
 /* =========================================
-   MAIN CONTENT WRAPPER
+   MAIN CONTENT
    ========================================= */
 .tl-main-wrapper {
-    padding: var(--cds-spacing-07) var(--cds-spacing-05);
+    padding: var(--cds-spacing-07) var(--cds-spacing-05) var(--cds-spacing-09);
     max-width: 1584px;
     margin: 0 auto;
 }
 
+.page-title-row {
+    display: flex;
+    align-items: baseline;
+    gap: var(--cds-spacing-04);
+    flex-wrap: wrap;
+    margin-bottom: var(--cds-spacing-02);
+}
+
 .page-title {
-    margin: 0 0 var(--cds-spacing-02) 0;
+    margin: 0;
     font-size: 28px;
     font-weight: 400;
     line-height: 36px;
-    letter-spacing: 0;
     color: var(--cds-text-primary);
+}
+
+.page-title-meta {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--cds-text-secondary);
+    letter-spacing: 0.32px;
+    padding: 2px 8px;
+    background: var(--cds-layer-accent-01);
 }
 
 .page-subtitle {
@@ -241,54 +279,138 @@ button { font-family: inherit; }
     font-size: 14px;
     color: var(--cds-text-secondary);
     line-height: 20px;
+    max-width: 640px;
 }
 
 /* =========================================
-   SUMMARY / BATCH BAR (Carbon Tile + Toolbar)
+   KPI STRIP
    ========================================= */
-.summary-container {
+.kpi-strip {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--cds-border-subtle-00);
+    border: 1px solid var(--cds-border-subtle-00);
     margin-bottom: var(--cds-spacing-06);
 }
 
-.batch-bar {
+.kpi-tile {
     background: var(--cds-layer-02);
     padding: var(--cds-spacing-05) var(--cds-spacing-06);
-    border: 1px solid transparent;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: var(--cds-spacing-05);
-    box-shadow: none;
-    transition: border-color 70ms cubic-bezier(0.2, 0, 0.38, 0.9);
+    flex-direction: column;
+    gap: var(--cds-spacing-03);
+    transition: background-color 70ms cubic-bezier(0.2, 0, 0.38, 0.9);
+    min-height: 112px;
 }
 
-.batch-bar:hover { border-color: var(--cds-border-subtle-01); }
+.kpi-tile:hover { background: var(--cds-layer-hover-01); }
 
-.batch-status {
-    font-size: 13px;
+.kpi-label {
+    font-size: 12px;
+    font-weight: 400;
     color: var(--cds-text-secondary);
+    text-transform: none;
+    letter-spacing: 0.32px;
+}
+
+.kpi-value {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 32px;
+    font-weight: 300;
+    line-height: 40px;
+    color: var(--cds-text-primary);
+    letter-spacing: 0;
+}
+
+.kpi-value .unit {
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--cds-text-secondary);
+    margin-left: 4px;
+}
+
+.kpi-value.mono { font-family: 'IBM Plex Mono', monospace; font-size: 28px; }
+
+.kpi-meta {
+    font-size: 12px;
+    color: var(--cds-text-secondary);
+    margin-top: auto;
+    font-family: 'IBM Plex Mono', monospace;
+    letter-spacing: 0.32px;
+}
+
+/* =========================================
+   PROGRESS BAR (Carbon)
+   ========================================= */
+.cds-progress {
     display: flex;
+    flex-direction: column;
+    gap: 4px;
+    width: 100%;
+}
+.cds-progress-track {
+    width: 100%;
+    height: 4px;
+    background: var(--cds-border-subtle-00);
+    overflow: hidden;
+    position: relative;
+}
+.cds-progress-bar {
+    height: 100%;
+    background: var(--cds-button-primary);
+    width: 0%;
+    transition: width 200ms ease-out;
+}
+.cds-progress.indeterminate .cds-progress-bar {
+    width: 30%;
+    animation: tl-indeterminate 1.4s ease-in-out infinite;
+}
+@keyframes tl-indeterminate {
+    0%   { transform: translateX(-100%); }
+    100% { transform: translateX(400%); }
+}
+.cds-progress-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    font-family: 'IBM Plex Mono', monospace;
+    color: var(--cds-text-secondary);
+    letter-spacing: 0.32px;
+}
+.cds-progress.success .cds-progress-bar { background: var(--cds-support-success); }
+
+/* =========================================
+   TOOLBAR
+   ========================================= */
+.tl-toolbar {
+    background: var(--cds-layer-02);
+    border: 1px solid var(--cds-border-subtle-00);
+    border-bottom: none;
+    padding: var(--cds-spacing-04) var(--cds-spacing-06);
+    display: flex;
+    justify-content: space-between;
     align-items: center;
     gap: var(--cds-spacing-05);
     flex-wrap: wrap;
 }
 
-.batch-status strong {
-    color: var(--cds-text-primary);
-    font-weight: 600;
-    margin-right: var(--cds-spacing-02);
-    text-transform: uppercase;
-    font-size: 11px;
-    letter-spacing: 0.32px;
+.tl-toolbar-left {
+    display: flex;
+    align-items: center;
+    gap: var(--cds-spacing-04);
+    flex-wrap: wrap;
+    min-width: 0;
+    flex: 1;
 }
 
-.divider {
-    width: 1px;
-    height: 16px;
-    background: var(--cds-border-subtle-01);
+.tl-toolbar-right {
+    display: flex;
+    align-items: center;
+    gap: var(--cds-spacing-03);
+    flex-wrap: wrap;
 }
 
-/* Carbon-style role tag */
 .role-tag {
     display: inline-flex;
     align-items: center;
@@ -318,55 +440,54 @@ button { font-family: inherit; }
     align-items: center;
     gap: var(--cds-spacing-03);
     font-size: 13px;
-    font-weight: 400;
     color: var(--cds-support-success);
 }
-.sync-complete::before {
-    content: '✓';
-    font-weight: 700;
-    font-size: 14px;
+.sync-complete::before { content: '✓'; font-weight: 700; }
+
+.tl-toolbar-progress {
+    flex: 1 1 240px;
+    min-width: 200px;
+    max-width: 420px;
 }
 
 /* =========================================
-   DATA TABLE — Content Header
+   DATA TABLE
    ========================================= */
 .content-header {
     display: grid;
-    grid-template-columns: 260px 160px 1fr 200px;
+    grid-template-columns: minmax(220px, 1.4fr) 160px minmax(240px, 2.4fr) 200px;
     gap: var(--cds-spacing-05);
     padding: var(--cds-spacing-04) var(--cds-spacing-06);
     background: var(--cds-layer-01);
+    border: 1px solid var(--cds-border-subtle-00);
     border-bottom: 1px solid var(--cds-border-subtle-01);
-    position: sticky;
-    top: 48px;
-    z-index: 10;
 }
 
 .column-label {
     font-size: 12px;
     font-weight: 600;
     color: var(--cds-text-primary);
-    text-transform: none;
     letter-spacing: 0.16px;
     line-height: 16px;
 }
+.column-label.right { text-align: right; }
 
 /* =========================================
-   FEED & AUDIT CARDS (Carbon Tile pattern)
+   FEED & CARDS
    ========================================= */
 .tl-feed {
     display: flex;
     flex-direction: column;
     gap: 1px;
     background: var(--cds-border-subtle-00);
-    border-bottom: 1px solid var(--cds-border-subtle-00);
+    border: 1px solid var(--cds-border-subtle-00);
+    border-top: none;
 }
 
 .audit-card {
     background: var(--cds-layer-02);
-    border: none;
     display: grid;
-    grid-template-columns: 260px 160px 1fr 200px;
+    grid-template-columns: minmax(220px, 1.4fr) 160px minmax(240px, 2.4fr) 200px;
     gap: var(--cds-spacing-05);
     align-items: center;
     padding: var(--cds-spacing-05) var(--cds-spacing-06);
@@ -379,7 +500,6 @@ button { font-family: inherit; }
     border-left-color: var(--cds-button-primary);
 }
 
-/* User info column */
 .user-info { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
 .user-info .name {
     font-weight: 600;
@@ -393,20 +513,16 @@ button { font-family: inherit; }
 .user-info .date {
     font-size: 12px;
     color: var(--cds-text-secondary);
-    font-weight: 400;
     font-family: 'IBM Plex Mono', monospace;
     letter-spacing: 0.32px;
 }
 
-/* Hours column */
-.hours-info { display: flex; flex-direction: column; gap: var(--cds-spacing-03); }
+.hours-info { display: flex; flex-direction: column; gap: var(--cds-spacing-03); min-width: 0; }
 .hours-badge {
-    font-family: 'IBM Plex Sans', sans-serif;
     font-size: 24px;
     font-weight: 300;
     line-height: 28px;
     color: var(--cds-text-primary);
-    letter-spacing: 0;
 }
 .hours-badge small {
     font-size: 12px;
@@ -415,7 +531,25 @@ button { font-family: inherit; }
     font-weight: 400;
 }
 
-/* Status pill (Carbon Tag) */
+/* Utilization bar — under hours */
+.util-bar {
+    width: 100%;
+    max-width: 120px;
+    height: 4px;
+    background: var(--cds-border-subtle-00);
+    overflow: hidden;
+    margin-top: 2px;
+}
+.util-bar-fill {
+    height: 100%;
+    transition: width 200ms ease-out;
+}
+.util-low    { background: var(--cds-support-error); }
+.util-mid    { background: var(--cds-support-warning); }
+.util-target { background: var(--cds-support-success); }
+.util-over   { background: var(--cds-support-info); }
+
+/* Status pill */
 .status-pill {
     display: inline-flex;
     align-items: center;
@@ -426,7 +560,6 @@ button { font-family: inherit; }
     font-size: 11px;
     font-weight: 400;
     letter-spacing: 0.32px;
-    text-transform: none;
     background: var(--cds-tag-warm-bg);
     color: var(--cds-tag-warm-text);
     width: fit-content;
@@ -436,20 +569,15 @@ button { font-family: inherit; }
     width: 6px; height: 6px; border-radius: 50%;
     background: currentColor;
 }
-.status-pill.approved {
-    background: var(--cds-tag-green-bg);
-    color: var(--cds-tag-green-text);
-}
+.status-pill.approved { background: var(--cds-tag-green-bg); color: var(--cds-tag-green-text); }
 
-/* =========================================
-   PROJECT TAGS (Carbon Tag — blue)
-   ========================================= */
+/* Project tags */
 .project-list {
     display: flex;
     flex-wrap: wrap;
     gap: var(--cds-spacing-03);
-    padding: 0;
     align-items: center;
+    min-width: 0;
 }
 
 .project-tag {
@@ -467,16 +595,16 @@ button { font-family: inherit; }
     max-width: 220px;
     overflow: hidden;
     text-overflow: ellipsis;
-    transition: background-color 70ms cubic-bezier(0.2, 0, 0.38, 0.9);
 }
-
-.project-tag:hover {
-    background: #b8d3ff;
-    cursor: default;
+.project-tag.more {
+    background: var(--cds-tag-cool-bg);
+    color: var(--cds-tag-cool-text);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
 }
 
 /* =========================================
-   BUTTONS (Carbon Button system)
+   BUTTONS
    ========================================= */
 .btn,
 .btn-approve,
@@ -485,8 +613,9 @@ button { font-family: inherit; }
     display: inline-flex;
     align-items: center;
     justify-content: space-between;
+    gap: var(--cds-spacing-05);
     min-height: 40px;
-    padding: calc(0.875rem - 3px) 60px calc(0.875rem - 3px) var(--cds-spacing-05);
+    padding: calc(0.875rem - 3px) var(--cds-spacing-05);
     border: 1px solid transparent;
     border-radius: 0;
     font-family: 'IBM Plex Sans', sans-serif;
@@ -495,15 +624,9 @@ button { font-family: inherit; }
     line-height: 18px;
     letter-spacing: 0.16px;
     text-align: left;
-    text-decoration: none;
     cursor: pointer;
     outline: none;
-    transition:
-        background 70ms cubic-bezier(0, 0, 0.38, 0.9),
-        box-shadow 70ms cubic-bezier(0, 0, 0.38, 0.9),
-        border-color 70ms cubic-bezier(0, 0, 0.38, 0.9),
-        outline 70ms cubic-bezier(0, 0, 0.38, 0.9);
-    text-transform: none;
+    transition: background 70ms cubic-bezier(0, 0, 0.38, 0.9), border-color 70ms;
 }
 
 .btn-primary,
@@ -512,63 +635,61 @@ button { font-family: inherit; }
     color: var(--cds-text-on-color);
     border-color: var(--cds-button-primary);
 }
-
 .btn-primary:hover,
 .btn-approve:hover {
     background: var(--cds-button-primary-hover);
     border-color: var(--cds-button-primary-hover);
-    color: var(--cds-text-on-color);
 }
-
 .btn-primary:active,
 .btn-approve:active {
     background: var(--cds-button-primary-active);
 }
-
 .btn-primary:focus,
 .btn-approve:focus {
     outline: 2px solid var(--cds-focus);
     outline-offset: -4px;
     box-shadow: inset 0 0 0 1px var(--cds-text-on-color);
 }
-
-/* Approve button on card */
+.btn-primary:disabled,
+.btn-approve:disabled {
+    background: var(--cds-border-subtle-01);
+    border-color: var(--cds-border-subtle-01);
+    color: #8d8d8d;
+    cursor: not-allowed;
+}
 .btn-approve {
-    width: auto;
-    min-width: 180px;
+    width: 100%;
     justify-content: space-between;
 }
 .btn-approve::after {
     content: '→';
-    margin-left: var(--cds-spacing-05);
     font-size: 16px;
     line-height: 1;
 }
 
-/* Approved state label */
+/* Approved label */
 .approved-label {
     display: inline-flex;
     align-items: center;
     gap: var(--cds-spacing-03);
     color: var(--cds-support-success);
-    font-weight: 400;
     font-size: 14px;
     height: 40px;
     padding: 0 var(--cds-spacing-05);
     background: var(--cds-tag-green-bg);
     border-left: 3px solid var(--cds-support-success);
+    width: 100%;
+    box-sizing: border-box;
 }
 .approved-label::before { content: '✓'; font-weight: 700; }
 
 /* =========================================
-   LOADING OVERLAY (Carbon Loading)
+   LOADING OVERLAY (initial auth only)
    ========================================= */
 .loading-overlay {
     position: fixed;
     inset: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(22, 22, 22, 0.5);
+    background: rgba(22, 22, 22, 0.55);
     backdrop-filter: blur(2px);
     z-index: 9999;
     display: flex;
@@ -600,10 +721,8 @@ button { font-family: inherit; }
     display: block;
     font-weight: 600;
     font-size: 14px;
-    letter-spacing: 0.16px;
     color: var(--cds-text-primary);
     margin-bottom: var(--cds-spacing-02);
-    text-transform: none;
 }
 
 .detail-msg {
@@ -611,12 +730,35 @@ button { font-family: inherit; }
     font-size: 12px;
     color: var(--cds-text-secondary);
     font-family: 'IBM Plex Mono', monospace;
-    letter-spacing: 0.32px;
 }
 
 @keyframes spin {
     0%   { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
+}
+
+/* =========================================
+   SKELETON ROWS
+   ========================================= */
+.skeleton-row {
+    display: grid;
+    grid-template-columns: minmax(220px, 1.4fr) 160px minmax(240px, 2.4fr) 200px;
+    gap: var(--cds-spacing-05);
+    align-items: center;
+    padding: var(--cds-spacing-05) var(--cds-spacing-06);
+    background: var(--cds-layer-02);
+}
+.skeleton-block {
+    height: 14px;
+    background: linear-gradient(90deg, #e8e8e8 0%, #f4f4f4 50%, #e8e8e8 100%);
+    background-size: 200% 100%;
+    animation: tl-shimmer 1.4s ease-in-out infinite;
+}
+.skeleton-block.tall { height: 28px; }
+.skeleton-block.short { width: 60%; }
+@keyframes tl-shimmer {
+    0%   { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
 }
 
 /* =========================================
@@ -627,13 +769,23 @@ button { font-family: inherit; }
     padding: var(--cds-spacing-09) var(--cds-spacing-07);
     background: var(--cds-layer-02);
     border: 1px solid var(--cds-border-subtle-00);
-    border-radius: 0;
+    background-image:
+        radial-gradient(circle, var(--cds-border-subtle-00) 1px, transparent 1px);
+    background-size: 16px 16px;
+    background-position: center;
+}
+.empty-state-inner {
+    background: var(--cds-layer-02);
+    display: inline-block;
+    padding: var(--cds-spacing-06) var(--cds-spacing-08);
+    max-width: 480px;
 }
 .empty-icon {
     font-size: 40px;
     margin-bottom: var(--cds-spacing-05);
-    opacity: 0.4;
     color: var(--cds-text-secondary);
+    opacity: 0.5;
+    font-family: 'IBM Plex Mono', monospace;
 }
 .empty-state p {
     margin: 0 0 var(--cds-spacing-03) 0;
@@ -645,20 +797,79 @@ button { font-family: inherit; }
     font-size: 13px;
     color: var(--cds-text-secondary);
     line-height: 18px;
+    display: block;
 }
 
 /* =========================================
-   RESPONSIVE
+   RESPONSIVE BREAKPOINTS
    ========================================= */
-@media (max-width: 960px) {
-    .content-header,
+
+/* Tablet — collapse to 2-row card */
+@media (max-width: 1199px) {
+    .kpi-strip { grid-template-columns: repeat(2, 1fr); }
+    .content-header { display: none; }
+
     .audit-card {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr 160px;
+        grid-template-rows: auto auto;
+        gap: var(--cds-spacing-04) var(--cds-spacing-05);
+        padding: var(--cds-spacing-05) var(--cds-spacing-06);
+    }
+    .audit-card .user-info { grid-column: 1; grid-row: 1; }
+    .audit-card .hours-info { grid-column: 2; grid-row: 1; align-items: flex-end; text-align: right; }
+    .audit-card .hours-info .util-bar { margin-left: auto; }
+    .audit-card .project-list { grid-column: 1 / -1; grid-row: 2; padding-top: var(--cds-spacing-03); border-top: 1px solid var(--cds-border-subtle-00); }
+    .audit-card .actions { grid-column: 1 / -1; grid-row: 3; }
+    .audit-card .actions .btn-approve,
+    .audit-card .actions .approved-label { width: 100%; }
+
+    .skeleton-row { grid-template-columns: 1fr 1fr; }
+}
+
+/* Mobile */
+@media (max-width: 767px) {
+    .tl-header {
+        flex-direction: column;
+        height: auto;
+        padding: var(--cds-spacing-04);
+        align-items: stretch;
         gap: var(--cds-spacing-04);
     }
-    .content-header { display: none; }
-    .audit-card { padding: var(--cds-spacing-05); }
-    .tl-header { flex-direction: column; height: auto; padding: var(--cds-spacing-04); gap: var(--cds-spacing-04); }
-    .date-selector-wrapper { border-left: none; padding: 0; }
-    .batch-bar { flex-direction: column; align-items: stretch; }
+    .global-actions { flex-direction: column; align-items: stretch; }
+    .connection-status,
+    .date-selector-wrapper {
+        border-left: none;
+        border-top: 1px solid #393939;
+        padding: var(--cds-spacing-03) 0 0 0;
+    }
+    .tl-main-wrapper { padding: var(--cds-spacing-05) var(--cds-spacing-04) var(--cds-spacing-07); }
+    .page-title { font-size: 22px; line-height: 28px; }
+    .kpi-strip { grid-template-columns: 1fr; }
+    .kpi-tile { min-height: 88px; }
+
+    .tl-toolbar {
+        flex-direction: column;
+        align-items: stretch;
+        padding: var(--cds-spacing-04);
+    }
+    .tl-toolbar-left,
+    .tl-toolbar-right { width: 100%; }
+    .tl-toolbar-progress { max-width: none; }
+
+    .audit-card {
+        grid-template-columns: 1fr;
+        padding: var(--cds-spacing-05) var(--cds-spacing-04);
+    }
+    .audit-card .hours-info {
+        grid-column: 1; grid-row: 2;
+        flex-direction: row; align-items: center;
+        text-align: left;
+        justify-content: flex-start;
+    }
+    .audit-card .hours-info .util-bar { margin-left: 0; }
+    .audit-card .project-list { grid-row: 3; }
+    .audit-card .actions { grid-row: 4; }
+
+    .skeleton-row { grid-template-columns: 1fr; }
+    .empty-state { padding: var(--cds-spacing-07) var(--cds-spacing-04); }
 }

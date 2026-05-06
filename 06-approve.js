@@ -12,14 +12,14 @@ async function tlOnApproveClick(key) {
 
     if (group.hours < 8) {
         const ok = await tlConfirm(
-            'Aprobar día incompleto',
-            `${group.ownerName} solo registró ${tlFormatHours(group.hours)} (menos de 8h) el ${tlFormatDate(group.date)}. ¿Aprobar de todos modos?`
+            'Approve incomplete day',
+            `${group.ownerName} only logged ${tlFormatHours(group.hours)} (less than 8h) on ${tlFormatDate(group.date)}. Approve anyway?`
         );
         if (!ok) return;
     }
 
     const total = group.pendingLogs.length;
-    const progressToast = tlToast(`Aprobando 0/${total}...`, 'info', 99999);
+    const progressToast = tlToast(`Approving 0/${total}...`, 'info', 99999);
 
     let done = 0;
     const errors = [];
@@ -30,7 +30,7 @@ async function tlOnApproveClick(key) {
             return true;
         } finally {
             done++;
-            progressToast.textContent = `Aprobando ${done}/${total}...`;
+            progressToast.textContent = `Approving ${done}/${total}...`;
         }
     });
 
@@ -43,18 +43,18 @@ async function tlOnApproveClick(key) {
         });
     });
 
-    // Re-aggregate from rawLogs (which were mutated via reference)
+    // Re-aggregate from rawLogs (mutated by reference)
     TL.grouped = tlAggregate(TL.rawLogs);
     tlRender();
 
     if (errors.length === 0) {
-        tlToast(`✓ ${total} log${total === 1 ? '' : 's'} aprobado${total === 1 ? '' : 's'} para ${group.ownerName}`, 'success');
+        tlToast(`✓ ${total} log${total === 1 ? '' : 's'} approved for ${group.ownerName}`, 'success');
     } else if (errors.length < total) {
-        tlToast(`Aprobados ${total - errors.length}/${total}. ${errors.length} fallaron (ver consola).`, 'warning', 6000);
-        console.warn('[TL] Errores de aprobación:', errors);
+        tlToast(`Approved ${total - errors.length}/${total}. ${errors.length} failed (see console).`, 'warning', 6000);
+        console.warn('[TL] Approval errors:', errors);
     } else {
         const sample = errors[0].error;
-        tlToast(`Error al aprobar: ${sample.message || 'sin detalle'}`, 'error', 6000);
-        console.error('[TL] Falla aprobación:', errors);
+        tlToast(`Approval error: ${sample.message || 'no detail'}`, 'error', 6000);
+        console.error('[TL] Approval failure:', errors);
     }
 }

@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Zazmic | Timesheet Auditor</title>
 
-    <script src="https://js.zohocdn.com/projects/js/client_sdk.min.js"></script>
+    <script src="https://js.zohocdn.com/projects/js/client_sdk.min.js" defer></script>
 
     <link rel="stylesheet" href="css/timelogs.css">
 </head>
@@ -15,8 +15,8 @@
         <div class="loader-content">
             <div class="spinner"></div>
             <div class="loader-text">
-                <span class="main-msg">Procesando datos</span>
-                <span id="tl-loading-detail" class="detail-msg">Sincronizando con Zoho Projects...</span>
+                <span class="main-msg">Authenticating</span>
+                <span id="tl-loading-detail" class="detail-msg">Connecting to Zoho Projects...</span>
             </div>
         </div>
     </div>
@@ -25,39 +25,73 @@
         <header class="tl-header">
             <div class="brand-group">
                 <div class="logo-placeholder">ZA</div>
-                <div>
-                    <h1><strong>Zazmic</strong> Timesheet Auditor <span class="v-tag">v3.0</span></h1>
-                </div>
+                <h1>
+                    <strong>Zazmic</strong><span class="sep">/</span>Timesheet Auditor
+                    <span class="v-tag">v3.0</span>
+                </h1>
             </div>
 
             <div class="global-actions">
+                <div id="tl-conn" class="connection-status">
+                    <span class="dot"></span>
+                    <span class="label">Disconnected</span>
+                </div>
                 <div class="date-selector-wrapper">
-                    <label for="tl-date">Periodo de auditoría</label>
+                    <label for="tl-date">Audit period</label>
                     <input type="month" id="tl-date" class="tl-date-input">
                 </div>
             </div>
         </header>
 
         <div class="tl-main-wrapper">
-            <h2 class="page-title">Auditoría de timesheets</h2>
-            <p class="page-subtitle">Revisa y aprueba los registros de horas por consultor y día.</p>
+            <div class="page-title-row">
+                <h2 class="page-title">Timesheet review</h2>
+                <span id="tl-period-meta" class="page-title-meta">— / —</span>
+            </div>
+            <p class="page-subtitle">Review and approve consultant time logs by day across your active project portfolio.</p>
 
-            <section id="tl-summary" class="summary-container">
+            <section id="tl-kpi" class="kpi-strip" aria-label="Audit metrics">
+                <div class="kpi-tile">
+                    <span class="kpi-label">Portfolio</span>
+                    <span class="kpi-value" id="kpi-portfolio">0</span>
+                    <span class="kpi-meta">Active projects</span>
+                </div>
+                <div class="kpi-tile">
+                    <span class="kpi-label">Synced</span>
+                    <span class="kpi-value" id="kpi-synced">0 / 0</span>
+                    <div class="cds-progress" id="kpi-sync-progress">
+                        <div class="cds-progress-track"><div class="cds-progress-bar"></div></div>
+                    </div>
+                </div>
+                <div class="kpi-tile">
+                    <span class="kpi-label">Pending days</span>
+                    <span class="kpi-value" id="kpi-pending">0</span>
+                    <span class="kpi-meta" id="kpi-pending-meta">Awaiting approval</span>
+                </div>
+                <div class="kpi-tile">
+                    <span class="kpi-label">Total hours</span>
+                    <span class="kpi-value mono" id="kpi-hours">0.00<span class="unit">h</span></span>
+                    <span class="kpi-meta" id="kpi-hours-meta">Across audited days</span>
+                </div>
             </section>
+
+            <section id="tl-summary" class="summary-container"></section>
 
             <main class="tl-content">
                 <div class="content-header">
-                    <span class="column-label">Consultor / Fecha</span>
-                    <span class="column-label">Horas totales</span>
-                    <span class="column-label">Distribución de proyectos</span>
-                    <span class="column-label" style="text-align: right;">Acciones</span>
+                    <span class="column-label">Consultant / Date</span>
+                    <span class="column-label">Hours</span>
+                    <span class="column-label">Project distribution</span>
+                    <span class="column-label right">Action</span>
                 </div>
 
                 <div id="tl-feed" class="tl-feed">
                     <div class="empty-state">
-                        <div class="empty-icon">▦</div>
-                        <p>Esperando sincronización de proyectos</p>
-                        <small>Haz clic en "Sync next batch" para comenzar la auditoría.</small>
+                        <div class="empty-state-inner">
+                            <div class="empty-icon">[ ]</div>
+                            <p>Waiting for portfolio sync</p>
+                            <small>Click "Sync next batch" to begin auditing time logs.</small>
+                        </div>
                     </div>
                 </div>
             </main>
