@@ -500,7 +500,30 @@ button { font-family: inherit; }
     border-left-color: var(--cds-button-primary);
 }
 
-.user-info { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.user-info {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: var(--cds-spacing-04);
+    min-width: 0;
+}
+.user-meta { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.user-avatar {
+    flex: 0 0 auto;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+    box-shadow: 0 0 0 2px var(--cds-layer-02);
+}
 .user-info .name {
     font-weight: 600;
     font-size: 14px;
@@ -872,4 +895,285 @@ button { font-family: inherit; }
 
     .skeleton-row { grid-template-columns: 1fr; }
     .empty-state { padding: var(--cds-spacing-07) var(--cds-spacing-04); }
+}
+
+/* =========================================
+   CARBON TOGGLE (admin "My PM only")
+   ========================================= */
+.cds-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--cds-spacing-03);
+    cursor: pointer;
+    user-select: none;
+    font-size: 13px;
+    color: var(--cds-text-primary);
+}
+.cds-toggle input { position: absolute; opacity: 0; pointer-events: none; }
+.cds-toggle-track {
+    position: relative;
+    width: 36px;
+    height: 18px;
+    background: var(--cds-border-strong-01);
+    border-radius: 9px;
+    transition: background 90ms cubic-bezier(0.2, 0, 0.38, 0.9);
+    flex: 0 0 auto;
+}
+.cds-toggle-thumb {
+    position: absolute;
+    top: 2px; left: 2px;
+    width: 14px; height: 14px;
+    background: #ffffff;
+    border-radius: 50%;
+    transition: transform 90ms cubic-bezier(0.2, 0, 0.38, 0.9);
+}
+.cds-toggle input:checked + .cds-toggle-track {
+    background: var(--cds-button-primary);
+}
+.cds-toggle input:checked + .cds-toggle-track .cds-toggle-thumb {
+    transform: translateX(18px);
+}
+.cds-toggle input:focus-visible + .cds-toggle-track {
+    outline: 2px solid var(--cds-focus);
+    outline-offset: 2px;
+}
+.cds-toggle-label { white-space: nowrap; }
+
+/* =========================================
+   FILTER BAR (search + chips + sort)
+   ========================================= */
+.tl-filter-bar {
+    background: var(--cds-layer-02);
+    border: 1px solid var(--cds-border-subtle-00);
+    border-bottom: none;
+    padding: var(--cds-spacing-03) var(--cds-spacing-06);
+    display: flex;
+    align-items: center;
+    gap: var(--cds-spacing-05);
+    flex-wrap: wrap;
+    position: sticky;
+    top: var(--tl-header-h);
+    z-index: 5;
+}
+
+.tl-search {
+    position: relative;
+    flex: 1 1 280px;
+    min-width: 220px;
+    max-width: 420px;
+    display: flex;
+    align-items: center;
+}
+.tl-search-icon {
+    position: absolute;
+    left: 12px;
+    color: var(--cds-text-secondary);
+    font-size: 14px;
+    pointer-events: none;
+}
+.tl-search-input {
+    width: 100%;
+    height: 36px;
+    padding: 0 var(--cds-spacing-04) 0 32px;
+    border: none;
+    border-bottom: 1px solid var(--cds-border-strong-01);
+    background: var(--cds-layer-01);
+    font-family: inherit;
+    font-size: 13px;
+    color: var(--cds-text-primary);
+    outline: none;
+    transition: border-color 70ms ease;
+}
+.tl-search-input::placeholder { color: var(--cds-text-helper); }
+.tl-search-input:hover { background: var(--cds-layer-hover-01); }
+.tl-search-input:focus {
+    border-bottom: 2px solid var(--cds-button-primary);
+    padding-bottom: 0;
+}
+
+.tl-filter-chips { display: inline-flex; gap: 0; }
+.tl-chip {
+    background: var(--cds-layer-02);
+    border: 1px solid var(--cds-border-subtle-01);
+    color: var(--cds-text-primary);
+    padding: 6px 14px;
+    height: 32px;
+    font-size: 13px;
+    font-family: inherit;
+    cursor: pointer;
+    line-height: 1;
+    transition: all 70ms ease;
+}
+.tl-chip + .tl-chip { border-left: none; }
+.tl-chip:hover { background: var(--cds-layer-hover-01); }
+.tl-chip.active {
+    background: var(--cds-text-primary);
+    color: var(--cds-text-on-color);
+    border-color: var(--cds-text-primary);
+}
+.tl-chip:focus-visible {
+    outline: 2px solid var(--cds-focus);
+    outline-offset: -3px;
+}
+
+.tl-sort {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--cds-spacing-03);
+    font-size: 12px;
+    color: var(--cds-text-secondary);
+}
+.tl-sort label { white-space: nowrap; }
+
+.tl-select {
+    height: 32px;
+    padding: 0 28px 0 var(--cds-spacing-03);
+    border: none;
+    border-bottom: 1px solid var(--cds-border-strong-01);
+    background: var(--cds-layer-01);
+    font-family: inherit;
+    font-size: 13px;
+    color: var(--cds-text-primary);
+    outline: none;
+    appearance: none;
+    cursor: pointer;
+    background-image: linear-gradient(45deg, transparent 50%, var(--cds-text-primary) 50%),
+                      linear-gradient(135deg, var(--cds-text-primary) 50%, transparent 50%);
+    background-position: calc(100% - 14px) 14px, calc(100% - 8px) 14px;
+    background-size: 6px 6px, 6px 6px;
+    background-repeat: no-repeat;
+}
+.tl-select:hover { background-color: var(--cds-layer-hover-01); }
+.tl-select:focus {
+    border-bottom: 2px solid var(--cds-button-primary);
+}
+
+.tl-filter-count {
+    margin-left: auto;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--cds-text-secondary);
+    letter-spacing: 0.32px;
+    padding: 4px 10px;
+    background: var(--cds-layer-01);
+    border: 1px solid var(--cds-border-subtle-00);
+}
+
+/* =========================================
+   PAGER
+   ========================================= */
+.tl-pager {
+    background: var(--cds-layer-02);
+    border: 1px solid var(--cds-border-subtle-00);
+    border-top: none;
+    padding: var(--cds-spacing-03) var(--cds-spacing-06);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--cds-spacing-04);
+    flex-wrap: wrap;
+    font-size: 13px;
+    color: var(--cds-text-secondary);
+}
+
+.tl-pager-info {
+    font-family: 'IBM Plex Mono', monospace;
+    letter-spacing: 0.32px;
+    font-size: 12px;
+}
+
+.tl-pager-controls {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--cds-spacing-04);
+}
+
+.tl-pager-size {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--cds-spacing-02);
+    font-size: 12px;
+    color: var(--cds-text-secondary);
+}
+.tl-pager-size span { white-space: nowrap; }
+
+.tl-pager-btn {
+    width: 36px;
+    height: 36px;
+    border: 1px solid var(--cds-border-subtle-01);
+    background: var(--cds-layer-02);
+    color: var(--cds-text-primary);
+    font-family: inherit;
+    font-size: 18px;
+    line-height: 1;
+    cursor: pointer;
+    transition: background 70ms ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+.tl-pager-btn:hover:not(:disabled) { background: var(--cds-layer-hover-01); }
+.tl-pager-btn:disabled {
+    color: var(--cds-border-strong-01);
+    cursor: not-allowed;
+    background: var(--cds-layer-01);
+}
+.tl-pager-btn:focus-visible {
+    outline: 2px solid var(--cds-focus);
+    outline-offset: -3px;
+}
+
+.tl-pager-pos {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.32px;
+    min-width: 100px;
+    text-align: center;
+    color: var(--cds-text-primary);
+}
+
+/* =========================================
+   BUTTON ARROW DETAIL
+   ========================================= */
+.btn-arrow {
+    font-family: 'IBM Plex Mono', monospace;
+    opacity: 0.85;
+    font-size: 13px;
+    margin-left: var(--cds-spacing-03);
+}
+
+/* =========================================
+   PERF: contain rebuild scope on the feed
+   ========================================= */
+.tl-feed { contain: layout paint; }
+.audit-card { contain: layout paint; }
+
+/* =========================================
+   RESPONSIVE — filter bar & pager
+   ========================================= */
+@media (max-width: 1199px) {
+    .tl-filter-bar { padding: var(--cds-spacing-03) var(--cds-spacing-04); }
+    .tl-filter-count { display: none; }
+}
+
+@media (max-width: 767px) {
+    .tl-filter-bar {
+        position: static;
+        flex-direction: column;
+        align-items: stretch;
+        gap: var(--cds-spacing-03);
+    }
+    .tl-search { max-width: none; min-width: 0; }
+    .tl-filter-chips { justify-content: stretch; }
+    .tl-chip { flex: 1; }
+    .tl-sort { justify-content: space-between; }
+    .tl-pager {
+        flex-direction: column;
+        align-items: stretch;
+        padding: var(--cds-spacing-04);
+    }
+    .tl-pager-controls {
+        justify-content: space-between;
+        flex-wrap: wrap;
+    }
 }

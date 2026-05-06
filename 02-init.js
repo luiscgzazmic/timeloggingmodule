@@ -41,23 +41,13 @@ async function tlInit() {
         TL.currentUser = user;
 
         const userEmail = String(user?.email || user?.login_id || 'UNKNOWN').toLowerCase().trim();
-        TL.isSuperAdmin = userEmail.includes('financeops');
+        TL.isSuperAdmin = (window.TL_ADMIN_EMAILS || []).some(token => userEmail.includes(token));
 
         tlSetLoading(true, 'Fetching active portfolio...');
         tlSetIndeterminate('Loading portfolio');
-        const all = await tlListProjects();
+        TL.allProjects = await tlListProjects();
 
-        // 3. Filter by ownership / management
-        if (TL.isSuperAdmin) {
-            TL.projects = all;
-        } else {
-            const uid = String(user?.zpuid || user?.id || user?.emp_id);
-            TL.projects = all.filter(p => {
-                const pmId = String(p.project_manager?.zpuid || p.project_manager?.id || p.project_manager_id);
-                const ownerId = String(p.owner?.zpuid || p.owner?.id || p.owner_id);
-                return pmId === uid || ownerId === uid;
-            });
-        }
+        tlApplyProjectScope();
 
         tlClearProgress();
         tlSetLoading(false);
@@ -89,6 +79,28 @@ async function tlInit() {
     }
 }
 
+/**
+ * Determine the project subset visible to the current user.
+ * Non-admins: always restricted to projects they manage / own.
+ * Admins: full portfolio by default; restricted when adminMyOnly is true.
+ */
+function tlApplyProjectScope() {
+    const user = TL.currentUser || {};
+    const useMyOnly = !TL.isSuperAdmin || TL.adminMyOnly;
+
+    if (!useMyOnly) {
+        TL.projects = TL.allProjects.slice();
+        return;
+    }
+
+    const uid = String(user.zpuid || user.id || user.emp_id || '');
+    TL.projects = TL.allProjects.filter(p => {
+        const pmId = String(p.project_manager?.zpuid || p.project_manager?.id || p.project_manager_id || '');
+        const ownerId = String(p.owner?.zpuid || p.owner?.id || p.owner_id || '');
+        return pmId === uid || ownerId === uid;
+    });
+}
+
 function renderToolbar(email = 'admin') {
     const summary = document.getElementById('tl-summary');
     if (!summary) return;
@@ -98,13 +110,22 @@ function renderToolbar(email = 'admin') {
     const roleLabel = TL.isSuperAdmin ? `Superadmin · ${email}` : `User · ${email}`;
 
     const action = remaining > 0
-        ? `<button id="tl-sync-btn" class="btn btn-primary">Sync next ${Math.min(TL.batchSize, remaining)} projects <span style="font-family:'IBM Plex Mono',monospace;opacity:0.7;font-size:12px;">→</span></button>`
+        ? `<button id="tl-sync-btn" class="btn btn-primary">Sync next ${Math.min(TL.batchSize, remaining)} projects <span class="btn-arrow">→</span></button>`
         : `<span class="sync-complete">Audit pool fully synced</span>`;
+
+    const adminToggle = TL.isSuperAdmin ? `
+        <label class="cds-toggle" title="Restrict to projects you manage">
+            <input type="checkbox" id="tl-admin-myonly" ${TL.adminMyOnly ? 'checked' : ''}>
+            <span class="cds-toggle-track"><span class="cds-toggle-thumb"></span></span>
+            <span class="cds-toggle-label">My PM projects only</span>
+        </label>
+    ` : '';
 
     summary.innerHTML = `
         <div class="tl-toolbar">
             <div class="tl-toolbar-left">
                 <span class="${roleClass}">${roleLabel}</span>
+                ${adminToggle}
             </div>
             <div class="tl-toolbar-right">
                 ${action}
@@ -114,6 +135,22 @@ function renderToolbar(email = 'admin') {
 
     const btn = document.getElementById('tl-sync-btn');
     if (btn) btn.addEventListener('click', tlSyncNextBatch);
+
+    const toggle = document.getElementById('tl-admin-myonly');
+    if (toggle) toggle.addEventListener('change', tlOnAdminToggle);
+}
+
+function tlOnAdminToggle(e) {
+    TL.adminMyOnly = !!e.target.checked;
+    TL.rawLogs = [];
+    TL.grouped = [];
+    TL.batchIndex = 0;
+    TL.pageIndex = 0;
+    tlApplyProjectScope();
+    renderToolbar(TL.currentUser?.email || TL.currentUser?.login_id || 'admin');
+    tlRenderKPIs();
+    if (TL.projects.length > 0) tlSyncNextBatch();
+    else tlRender();
 }
 
 function tlRenderKPIs() {
@@ -131,15 +168,12 @@ function tlRenderKPIs() {
     const totalHours = TL.grouped.reduce((s, g) => s + (g.totalHours || 0), 0);
     if (hours) hours.innerHTML = `${totalHours.toFixed(2)}<span class="unit">h</span>`;
 
-    // Update progress bar fill (in case toolbar action wasn't running)
     const wrap = document.getElementById('kpi-sync-progress');
     if (wrap && !wrap.classList.contains('indeterminate')) {
         const bar = wrap.querySelector('.cds-progress-bar');
         const pct = TL.projects.length > 0 ? Math.round((TL.batchIndex / TL.projects.length) * 100) : 0;
         if (bar) bar.style.width = pct + '%';
-        if (TL.projects.length > 0 && TL.batchIndex >= TL.projects.length) {
-            wrap.classList.add('success');
-        }
+        wrap.classList.toggle('success', TL.projects.length > 0 && TL.batchIndex >= TL.projects.length);
     }
 
     const periodMeta = document.getElementById('tl-period-meta');
@@ -155,7 +189,7 @@ async function tlSyncNextBatch() {
     const btn = document.getElementById('tl-sync-btn');
     if (btn) btn.disabled = true;
 
-    tlRenderSkeletons(Math.min(3, chunk.length));
+    if (TL.grouped.length === 0) tlRenderSkeletons(3);
     tlSetProgress(0, chunk.length, `Syncing batch ${start + 1}–${end}`);
 
     await tlPool(chunk, TL_FETCH_CONCURRENCY, async (project) => {
@@ -174,8 +208,13 @@ async function tlSyncNextBatch() {
     TL.batchIndex = end;
     TL.grouped = tlAggregate(TL.rawLogs);
 
-    // Final cumulative progress vs full portfolio
-    tlSetProgress(TL.batchIndex, TL.projects.length, TL.batchIndex >= TL.projects.length ? 'Sync complete' : `Loaded ${TL.batchIndex} / ${TL.projects.length}`);
+    tlSetProgress(
+        TL.batchIndex,
+        TL.projects.length,
+        TL.batchIndex >= TL.projects.length
+            ? 'Sync complete'
+            : `Loaded ${TL.batchIndex} / ${TL.projects.length}`
+    );
 
     renderToolbar(TL.currentUser?.email || TL.currentUser?.login_id || 'admin');
     tlRenderKPIs();
@@ -185,7 +224,7 @@ async function tlSyncNextBatch() {
 function tlRenderSkeletons(n) {
     const feed = document.getElementById('tl-feed');
     if (!feed) return;
-    if (TL.grouped.length > 0) return; // don't replace real data
+    if (TL.grouped.length > 0) return;
 
     const rows = [];
     for (let i = 0; i < n; i++) {
@@ -222,6 +261,7 @@ function tlBindDateInput() {
         TL.rawLogs = [];
         TL.grouped = [];
         TL.batchIndex = 0;
+        TL.pageIndex = 0;
         tlRenderKPIs();
         renderToolbar(TL.currentUser?.email || TL.currentUser?.login_id || 'admin');
         if (TL.projects.length > 0) tlSyncNextBatch();
