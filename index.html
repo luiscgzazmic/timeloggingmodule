@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zazmic | Timesheet Auditor Professional</title>
-    
+    <title>Zazmic | Timesheet Auditor</title>
+
     <script src="https://js.zohocdn.com/projects/js/client_sdk.min.js"></script>
-    
+
     <link rel="stylesheet" href="css/timelogs.css">
 </head>
 <body>
@@ -15,7 +15,7 @@
         <div class="loader-content">
             <div class="spinner"></div>
             <div class="loader-text">
-                <span class="main-msg">PROCESANDO DATOS</span>
+                <span class="main-msg">Procesando datos</span>
                 <span id="tl-loading-detail" class="detail-msg">Sincronizando con Zoho Projects...</span>
             </div>
         </div>
@@ -26,38 +26,42 @@
             <div class="brand-group">
                 <div class="logo-placeholder">ZA</div>
                 <div>
-                    <h1>Auditor <span class="v-tag">V3.0</span></h1>
-                    <p class="subtitle">Timesheet Management System</p>
+                    <h1><strong>Zazmic</strong> Timesheet Auditor <span class="v-tag">v3.0</span></h1>
                 </div>
             </div>
-            
+
             <div class="global-actions">
                 <div class="date-selector-wrapper">
-                    <label for="tl-date">Periodo de Auditoría</label>
+                    <label for="tl-date">Periodo de auditoría</label>
                     <input type="month" id="tl-date" class="tl-date-input">
                 </div>
             </div>
         </header>
 
-        <section id="tl-summary" class="summary-container">
+        <div class="tl-main-wrapper">
+            <h2 class="page-title">Auditoría de timesheets</h2>
+            <p class="page-subtitle">Revisa y aprueba los registros de horas por consultor y día.</p>
+
+            <section id="tl-summary" class="summary-container">
             </section>
 
-        <main class="tl-content">
-            <div class="content-header">
-                <span class="column-label">CONSULTOR / FECHA</span>
-                <span class="column-label">HORAS TOTALES</span>
-                <span class="column-label">DISTRIBUCIÓN DE PROYECTOS</span>
-                <span class="column-label" style="text-align: right;">ACCIONES</span>
-            </div>
-            
-            <div id="tl-feed" class="tl-feed">
-                <div class="empty-state">
-                    <div class="empty-icon">📁</div>
-                    <p>Esperando sincronización de proyectos...</p>
-                    <small>Haz clic en "SYNC NEXT BATCH" para comenzar la auditoría.</small>
+            <main class="tl-content">
+                <div class="content-header">
+                    <span class="column-label">Consultor / Fecha</span>
+                    <span class="column-label">Horas totales</span>
+                    <span class="column-label">Distribución de proyectos</span>
+                    <span class="column-label" style="text-align: right;">Acciones</span>
                 </div>
-            </div>
-        </main>
+
+                <div id="tl-feed" class="tl-feed">
+                    <div class="empty-state">
+                        <div class="empty-icon">▦</div>
+                        <p>Esperando sincronización de proyectos</p>
+                        <small>Haz clic en "Sync next batch" para comenzar la auditoría.</small>
+                    </div>
+                </div>
+            </main>
+        </div>
     </div>
 
     <script src="js/timelogs/01-state.js"></script>
