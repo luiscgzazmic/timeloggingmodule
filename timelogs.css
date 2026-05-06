@@ -1,0 +1,174 @@
+/* =========================================
+   ZA ZMIC - TIMESHEET AUDITOR PROFESSIONAL
+   ========================================= */
+
+:root {
+    --primary: #0f62fe;
+    --primary-hover: #0353e9;
+    --bg-app: #f4f7fb;
+    --card-bg: #ffffff;
+    --text-main: #161616;
+    --text-secondary: #525252;
+    --border: #e0e0e0;
+    --accent: #e5eaff;
+    --success: #24a148;
+    --warning: #f1c21b;
+}
+
+* { box-sizing: border-box; }
+
+body {
+    background-color: var(--bg-app);
+    color: var(--text-main);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    margin: 0;
+    padding: 24px;
+    line-height: 1.5;
+}
+
+/* --- SHELL & LAYOUT --- */
+.tl-shell {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* --- HEADER --- */
+.tl-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+}
+
+.brand-group { display: flex; align-items: center; gap: 16px; }
+
+.logo-placeholder {
+    background: var(--primary);
+    color: white;
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 1.2rem;
+    box-shadow: 0 4px 12px rgba(15, 98, 254, 0.3);
+}
+
+.brand-group h1 { margin: 0; font-size: 24px; font-weight: 700; color: #161616; }
+.subtitle { margin: 0; font-size: 14px; color: var(--text-secondary); }
+.v-tag { font-size: 10px; background: #e0e0e0; padding: 2px 6px; border-radius: 4px; vertical-align: middle; margin-left: 8px; }
+
+/* --- DATE SELECTOR --- */
+.date-selector-wrapper { text-align: right; }
+.date-selector-wrapper label { display: block; font-size: 12px; font-weight: 600; margin-bottom: 4px; color: var(--text-secondary); }
+.tl-date-input {
+    border: 1px solid var(--border);
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-weight: 600;
+    color: var(--primary);
+    outline: none;
+}
+
+/* --- SUMMARY / BATCH BAR --- */
+.summary-container { margin-bottom: 24px; }
+
+.batch-bar {
+    background: white;
+    padding: 16px 24px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+}
+
+.batch-status { font-size: 14px; color: var(--text-secondary); display: flex; align-items: center; gap: 12px; }
+.divider { width: 1px; height: 20px; background: var(--border); }
+
+/* --- CONTENT HEADER (Labels) --- */
+.content-header {
+    display: grid;
+    grid-template-columns: 220px 140px 1fr 180px;
+    padding: 0 24px 12px 24px;
+}
+.column-label { font-size: 11px; font-weight: 700; color: #8d8d8d; text-transform: uppercase; letter-spacing: 1px; }
+
+/* --- FEED & CARDS --- */
+.tl-feed { display: flex; flex-direction: column; gap: 12px; }
+
+.audit-card {
+    background: var(--card-bg);
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    display: grid;
+    grid-template-columns: 220px 140px 1fr 180px;
+    align-items: center;
+    padding: 20px 24px;
+    transition: all 0.2s ease;
+}
+.audit-card:hover { border-color: var(--primary); box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
+
+.user-info .name { font-weight: 700; font-size: 16px; color: var(--text-main); display: block; margin-bottom: 2px; }
+.user-info .date { font-size: 13px; color: var(--text-secondary); font-weight: 500; }
+
+.hours-badge { font-size: 22px; font-weight: 800; color: var(--primary); margin-bottom: 4px; }
+.hours-badge small { font-size: 12px; margin-left: 2px; color: var(--text-secondary); }
+
+.status-pill {
+    font-size: 10px; font-weight: 700; text-transform: uppercase;
+    padding: 4px 8px; border-radius: 6px;
+    background: #fff8e1; color: #b7791f; display: inline-block;
+}
+
+/* --- PROJECT TAGS --- */
+.project-list { display: flex; flex-wrap: wrap; gap: 8px; padding: 0 16px; }
+.project-tag {
+    background: var(--accent);
+    color: var(--primary);
+    font-size: 11px;
+    font-weight: 600;
+    padding: 6px 12px;
+    border-radius: 20px;
+    white-space: nowrap;
+    max-width: 180px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* --- BUTTONS --- */
+.btn { border: none; padding: 10px 20px; border-radius: 8px; font-weight: 700; cursor: pointer; transition: all 0.2s; }
+.btn-primary { background: var(--primary); color: white; }
+.btn-primary:hover { background: var(--primary-hover); transform: translateY(-1px); }
+.btn-approve {
+    background: var(--primary); color: white; border: none;
+    padding: 12px 24px; border-radius: 8px; font-weight: 700;
+    cursor: pointer; width: 100%;
+}
+
+/* --- LOADING OVERLAY --- */
+.loading-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(255,255,255,0.9); z-index: 9999;
+    display: flex; align-items: center; justify-content: center;
+}
+.loader-content { text-align: center; }
+.spinner {
+    width: 40px; height: 40px; border: 4px solid #f3f3f3;
+    border-top: 4px solid var(--primary); border-radius: 50%;
+    animation: spin 1s linear infinite; margin: 0 auto 16px;
+}
+.main-msg { display: block; font-weight: 800; font-size: 14px; letter-spacing: 2px; color: var(--text-main); }
+.detail-msg { font-size: 12px; color: var(--text-secondary); }
+
+@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+/* --- EMPTY STATE --- */
+.empty-state {
+    text-align: center; padding: 80px 40px;
+    background: white; border-radius: 12px; border: 2px dashed var(--border);
+}
+.empty-icon { font-size: 48px; margin-bottom: 16px; opacity: 0.3; }
