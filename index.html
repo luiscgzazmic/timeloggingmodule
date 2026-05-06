@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zazmic | Timesheet Auditor Professional</title>
+    
+    <script src="https://js.zohocdn.com/projects/js/client_sdk.min.js"></script>
+    
+    <link rel="stylesheet" href="css/timelogs.css">
+</head>
+<body>
+
+    <div id="tl-loading" class="loading-overlay" style="display:none;">
+        <div class="loader-content">
+            <div class="spinner"></div>
+            <div class="loader-text">
+                <span class="main-msg">PROCESANDO DATOS</span>
+                <span id="tl-loading-detail" class="detail-msg">Sincronizando con Zoho Projects...</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="tl-shell">
+        <header class="tl-header">
+            <div class="brand-group">
+                <div class="logo-placeholder">ZA</div>
+                <div>
+                    <h1>Auditor <span class="v-tag">V3.0</span></h1>
+                    <p class="subtitle">Timesheet Management System</p>
+                </div>
+            </div>
+            
+            <div class="global-actions">
+                <div class="date-selector-wrapper">
+                    <label for="tl-date">Periodo de Auditoría</label>
+                    <input type="month" id="tl-date" class="tl-date-input">
+                </div>
+            </div>
+        </header>
+
+        <section id="tl-summary" class="summary-container">
+            </section>
+
+        <main class="tl-content">
+            <div class="content-header">
+                <span class="column-label">CONSULTOR / FECHA</span>
+                <span class="column-label">HORAS TOTALES</span>
+                <span class="column-label">DISTRIBUCIÓN DE PROYECTOS</span>
+                <span class="column-label" style="text-align: right;">ACCIONES</span>
+            </div>
+            
+            <div id="tl-feed" class="tl-feed">
+                <div class="empty-state">
+                    <div class="empty-icon">📁</div>
+                    <p>Esperando sincronización de proyectos...</p>
+                    <small>Haz clic en "SYNC NEXT BATCH" para comenzar la auditoría.</small>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/timelogs/01-state.js"></script>
+    <script src="js/timelogs/03-api.js"></script>
+    <script src="js/timelogs/07-utils.js"></script>
+    <script src="js/timelogs/04-aggregate.js"></script>
+    <script src="js/timelogs/05-render.js"></script>
+    <script src="js/timelogs/06-approve.js"></script>
+    <script src="js/timelogs/02-init.js"></script>
+
+</body>
+</html>
