@@ -4,17 +4,22 @@ function tlRender() {
 
     if (TL.grouped.length === 0) {
         feed.innerHTML = `
-            <div style="text-align:center; padding: 60px; color: #888;">
-                <p>No hay registros pendientes para procesar en este lote.</p>
+            <div class="empty-state">
+                <div class="empty-icon">◷</div>
+                <p>No hay registros pendientes</p>
+                <small>No se encontraron timesheets para procesar en este lote.</small>
             </div>`;
         return;
     }
 
     feed.innerHTML = TL.grouped.map(g => {
-        // Convertimos el Set de proyectos en tags individuales
         const projectTags = Array.from(g.projects)
             .map(p => `<span class="project-tag" title="${p}">${p}</span>`)
             .join('');
+
+        const isApproved = g.status !== 'Pending';
+        const statusClass = isApproved ? 'status-pill approved' : 'status-pill';
+        const statusLabel = isApproved ? 'Aprobado' : 'Pendiente';
 
         return `
             <div class="audit-card">
@@ -22,10 +27,10 @@ function tlRender() {
                     <span class="name">${g.user}</span>
                     <span class="date">${tlFormatFriendlyDate(g.date)}</span>
                 </div>
-                
+
                 <div class="hours-info">
                     <div class="hours-badge">${g.totalHours.toFixed(2)}<small>h</small></div>
-                    <span class="status-pill">${g.status}</span>
+                    <span class="${statusClass}">${statusLabel}</span>
                 </div>
 
                 <div class="project-list">
@@ -33,9 +38,9 @@ function tlRender() {
                 </div>
 
                 <div class="actions" style="text-align: right;">
-                    ${g.status === 'Pending' ? 
-                        `<button class="btn-approve" onclick="tlApproveGroup('${g.userId}', '${g.date}')">APPROVE DAY</button>` : 
-                        `<span style="color: #24a148; font-weight:bold;">✓ APPROVED</span>`}
+                    ${!isApproved ?
+                        `<button class="btn-approve" onclick="tlApproveGroup('${g.userId}', '${g.date}')">Approve day</button>` :
+                        `<span class="approved-label">Approved</span>`}
                 </div>
             </div>
         `;

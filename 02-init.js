@@ -77,21 +77,23 @@ function renderBatchControls(email = "Admin") {
     if (!summary) return;
 
     const remaining = TL.projects.length - TL.batchIndex;
-    const roleTag = TL.isSuperAdmin ? `<span style="color:#0f62fe; font-weight:bold;">[SUPERADMIN: ${email}]</span>` : `[USER: ${email}]`;
+    const roleClass = TL.isSuperAdmin ? 'role-tag' : 'role-tag role-user';
+    const roleLabel = TL.isSuperAdmin ? `Superadmin · ${email}` : `Usuario · ${email}`;
+    const roleTag = `<span class="${roleClass}">${roleLabel}</span>`;
 
     summary.innerHTML = `
         <div class="batch-bar">
             <div class="batch-status">
-                ${roleTag} 
+                ${roleTag}
                 <span class="divider"></span>
-                <strong>PORTFOLIO:</strong> ${TL.projects.length} 
-                <span class="divider"></span> 
-                <strong>LOADED:</strong> ${TL.batchIndex}
+                <span><strong>Portfolio</strong> ${TL.projects.length}</span>
+                <span class="divider"></span>
+                <span><strong>Loaded</strong> ${TL.batchIndex}</span>
             </div>
             <div class="batch-actions">
-                ${remaining > 0 ? 
-                    `<button class="btn btn-primary" onclick="tlSyncNextBatch()">SYNC NEXT ${Math.min(TL.batchSize, remaining)} PROJECTS</button>` : 
-                    `<span class="sync-complete">AUDIT POOL FULLY SYNCED</span>`}
+                ${remaining > 0 ?
+                    `<button class="btn btn-primary" onclick="tlSyncNextBatch()">Sync next ${Math.min(TL.batchSize, remaining)} projects</button>` :
+                    `<span class="sync-complete">Audit pool fully synced</span>`}
             </div>
         </div>
     `;
